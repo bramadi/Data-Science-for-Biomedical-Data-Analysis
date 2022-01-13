@@ -1,0 +1,46 @@
+#Load Libraries
+library(dplyr)
+library(ggplot2)
+library(reshape2)
+library(openxlsx)
+
+#Load input data
+data <- read.xlsx('https://github.com/PineBiotech/bioinformatics/blob/master/17sample-OTU-mat1_phylum1.xlsx?raw=true', sheet = 2)
+
+#make dataframe 
+df=as.data.frame(data)
+
+#Change into required  input, so melt the data ###
+df$category <- row.names(df)
+melted_df <- melt(df)
+
+#Extract phylum and samples 
+phylum = melted_df$OTU
+Samples = melted_df$variable
+
+#Plot with counts 
+p <- ggplot(melted_df, aes(x = Samples, y = value)) +
+  geom_col(aes(fill = phylum, width = 0.5))
+
+p+ theme(legend.key.size = unit(0.3, "cm"), legend.text = element_text( color="Black", size=5.5), axis.text.x = element_text( color="Black", size=5.5, angle=45), axis.text.y = element_text( color="Black", size=5.5, angle=45))
+
+#Compute %age
+Value= melted_df$value
+Percentage= round(Value / sum(Value) * 100,2)
+
+#Plot with percentage 
+pp <- ggplot(melted_df, aes(x = Samples, y = Percentage, fill = phylum)) + 
+  geom_bar(position = "fill",stat = "identity") +
+  scale_y_continuous(labels = scales::percent_format())
+
+pp + theme(legend.key.size = unit(0.38, "cm"), legend.text = element_text( color="Black", size=5.8), axis.text.x = element_text( color="Black", size=5.5, angle=90), axis.text.y = element_text( color="Black", size=7.5)) 
+
+#Plot with counts 
+print (p+ theme(legend.key.size = unit(0.3, "cm"), legend.text = element_text( color="Black", size=5.5), axis.text.x = element_text( color="Black", size=5.5, angle=45), axis.text.y = element_text( color="Black", size=5.5, angle=45)))
+
+#Plot with %age
+
+print (pp + theme(legend.key.size = unit(0.38, "cm"), legend.text = element_text( color="Black", size=5.8), axis.text.x = element_text( color="Black", size=5.5, angle=90), axis.text.y = element_text( color="Black", size=7.5)) )
+
+#Print 2nd phylum name
+head(melted_df$OTU[2])

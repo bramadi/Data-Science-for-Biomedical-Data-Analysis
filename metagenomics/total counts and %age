@@ -1,3 +1,4 @@
+#Create groups and plot in terms of total counts and %age
 #Load Libraries
 library(dplyr)
 library(ggplot2)

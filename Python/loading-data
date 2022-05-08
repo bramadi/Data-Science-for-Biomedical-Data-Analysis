@@ -1,0 +1,15 @@
+#import packages
+import pandas as pd 
+import numpy as np
+
+Import a .txt dataset file using pandas 
+#load data into the object "df" using the pandas "read_table" function
+df = pd.read_table('Path/where/the/txtfile/is/located/filename.txt')
+
+#Import an excel spreadsheet using pandas 
+df = pd.read_excel('Path/where/the/Excel/file/is/located/filename.xlsx') 
+df 
+
+#import a .csv dataset using numpy 
+df = pd.read_csv('Path/where/the/csv/file/is/located/filename.csv', sep=',') 
+df 
